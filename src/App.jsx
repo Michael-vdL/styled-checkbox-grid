@@ -1,6 +1,13 @@
-import { CardArea } from './components/CardArea'
-import { GridArea } from './components/GridArea'
 import styled from 'styled-components'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { Security } from '@okta/okta-react'
+import { OktaAuth } from '@okta/okta-auth-js'
+
+import { LoginMenu } from './components/oktaLogin/LoginMenu'
+import { CheckboxDemo } from './views/CheckboxDemo'
+import { config } from './okta.config'
+
+const oktaAuth = new OktaAuth(config)
 
 const TestContainer = styled.div`
   display: grid;
@@ -10,27 +17,17 @@ const TestContainer = styled.div`
 `
 
 function App() {
-  const items = [
-    { title: 'Health Care', text: "We offer great healthcare. Because we're not the government." },
-    { title: 'Dental Care', text: "We offer really amzaing dental wow it's so good." },
-    { title: 'Health Care', text: "We offer great healthcare. Because we're not the government." },
-    { title: 'Dental Care', text: "We offer really amzaing dental wow it's so good." },
-    { title: 'Health Care', text: "We offer great healthcare. Because we're not the government." },
-    { title: 'Dental Care', text: "We offer really amzaing dental wow it's so good." },
-    { title: 'Health Care', text: "We offer great healthcare. Because we're not the government." },
-    { title: 'Dental Care', text: "We offer really amzaing dental wow it's so good." },
-    { title: 'Health Care', text: "We offer great healthcare. Because we're not the government." },
-    { title: 'Dental Care', text: "We offer really amzaing dental wow it's so good." },
-  ]
-
   return (
-    <TestContainer>
-      <GridArea>
-        {items.map((item, i) => (
-          <CardArea key={i} {...item}></CardArea>
-        ))}
-      </GridArea>
-    </TestContainer>
+    <Router>
+      <TestContainer>
+        <LoginMenu></LoginMenu>
+      </TestContainer>
+      <Security oktaAuth={oktaAuth}>
+        <TestContainer>
+          <CheckboxDemo></CheckboxDemo>
+        </TestContainer>
+      </Security>
+    </Router>
   )
 }
 
